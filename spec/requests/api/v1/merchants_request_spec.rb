@@ -65,6 +65,7 @@ describe 'merchants endpoints' do
     # end
   end
 
+
   context 'GET /api/v1/merchants/find_all?parameters' do
     it 'returns all merchants based on id' do
       merchant_1, merchant_2 = create_list(:merchant, 2)
