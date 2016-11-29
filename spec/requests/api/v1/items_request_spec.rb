@@ -57,22 +57,21 @@ describe 'items endpoints' do
 
     #also do this for other attributes on items
   end
-#
-#   context 'GET /api/v1/invoices/random' do
-#     it 'returns a random invoice' do
-#       customer = create(:customer)
-#       merchant = create(:merchant)
-#
-#       invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-#       invoice2 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-#
-#       get "/api/v1/invoices/random"
-#
-#       expect(response).to be_success
-#     #how else to test this?
-#     end
-#
-#     #also do this for other attributes on invoices?
-#   end
-#
+
+  context 'GET /api/v1/items/random' do
+    it 'returns a random item' do
+      new_item = create(:item_with_merchant)
+      new_item2 = create(:item_with_merchant)
+
+      get "/api/v1/items/random"
+
+      item = JSON.parse(response.body)
+
+      expect(response).to be_success
+    #how else to test this?
+    end
+
+    #also do this for other attributes on invoices?
+  end
+
 end
