@@ -25,7 +25,7 @@ describe Customer do
     end
 
     context "uniqueness" do
-      it "is invalid if full name is not unique" do
+      xit "is invalid if full name is not unique" do
         Customer.create(first_name: "Jeff", last_name: "Casimir")
         customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
 
