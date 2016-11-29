@@ -17,7 +17,7 @@ describe 'customers endpoints' do
   end
 
   context 'GET /customers/:id' do
-    it 'returns a specific merchant based on id' do
+    it 'returns a specific customer based on id' do
       customer = create(:customer)
 
       get "/api/v1/customers/#{customer.id}.json"
@@ -29,4 +29,27 @@ describe 'customers endpoints' do
     end
   end
 
+  context 'GET /api/v1/customers/find?parameters' do
+    it 'returns a single customer based on id' do
+      customer = create(:customer)
+
+      get "/api/v1/customers/find?id=#{customer.id}"
+
+      parsed_customer = JSON.parse(response.body)
+      byebug
+      expect(response).to be_success
+      expect(parsed_customer["id"]).to eq(customer.id)
+    end
+
+    xit 'returns a single customer based on name' do
+      customer = create(:customer)
+
+      get "/api/v1/customers/find?first_name=#{customer.first_name}"
+
+      parsed_customer = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(parsed_customer["first_name"]).to eq(customer.first_name)
+    end
+  end
 end
