@@ -9,19 +9,31 @@ describe Customer do
         expect(customer).to be_invalid
       end
 
-      it "is invalid without a last_name" do
+      it "is invalid without a last name" do
         customer = Customer.new(first_name: "Jeff")
+
+        expect(customer).to be_invalid
+      end
+
+      it "is invalid if full name is not unique" do
+        Customer.create(first_name: "Jeff", last_name: "Casimir")
+        customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
 
         expect(customer).to be_invalid
       end
     end
 
+
     context "valid attributes" do
-      it "is valid with a credit card number and result" do
-        customer = create(:customer)
-        merchant = create(:merchant)
-        invoice = customer.invoices.create(customer_id: customer.id, merchant_id: merchant.id, status: "filled")
-        customer = invoice.customers.create(credit_card_number: "1234", result: "shipped", invoice_id: invoice.id)
+      it "is valid with a with a first_name and last_name" do
+        customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
+
+        expect(customer).to be_valid
+      end
+
+      it "is valid with a with a unique full name" do
+        Customer.create(first_name: "Jeff", last_name: "Casimir")
+        customer = Customer.new(first_name: "Josh", last_name: "Mejia")
 
         expect(customer).to be_valid
       end
@@ -29,13 +41,16 @@ describe Customer do
   end
 
   describe "relationships" do
-    it "belongs to an invoice" do
-      customer = create(:customer)
-      merchant = create(:merchant)
-      invoice = customer.invoices.create(customer_id: customer.id, merchant_id: merchant.id, status: "filled")
-      customer = invoice.customers.create(credit_card_number: "1234", result: "shipped", invoice_id: invoice.id)
+    it "has many invoices" do
+      customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
 
-      expect(customer).to respond_to(:invoice)
+      expect(customer).to respond_to(:invoices)
+    end
+
+    it "has many merchants through invoices" do
+      customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
+
+      expect(customer).to respond_to(:merchants)
     end
   end
 end
