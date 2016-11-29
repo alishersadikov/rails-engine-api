@@ -17,4 +17,20 @@ describe 'invoices endpoints' do
       expect(invoices.count).to eq(2)
     end
   end
+
+  context 'GET /invoices/:id' do
+    it 'returns a specific invoice based on id' do
+      customer = create(:customer)
+      merchant = create(:merchant)
+
+      invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
+
+      get "/api/v1/invoices/#{invoice.id}"
+
+      invoice = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(invoice["status"]).to eq("filled")
+    end
+  end
 end
