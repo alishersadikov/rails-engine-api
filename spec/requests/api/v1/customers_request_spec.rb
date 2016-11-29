@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'customers endpoints' do
   context 'GET /customers' do
     it 'returns a list of all customers' do
-      # create_list(:customer, 3)
+      create_list(:customer, 3)
 
       get '/api/v1/customers'
 
