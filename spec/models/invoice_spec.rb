@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+#add test for random method?
 describe Invoice do
 
   describe "validations" do
@@ -37,6 +37,27 @@ describe Invoice do
       merchant = create(:merchant)
       invoice = customer.invoices.create(customer_id: customer.id, merchant_id: merchant.id, status: "filled")
       expect(invoice).to respond_to(:merchant)
+    end
+
+    it "has_many transactions" do
+      customer = create(:customer)
+      merchant = create(:merchant)
+      invoice = customer.invoices.create(customer_id: customer.id, merchant_id: merchant.id, status: "filled")
+      expect(invoice).to respond_to(:transaction)
+    end
+
+    it "has_many invoice items" do
+      customer = create(:customer)
+      merchant = create(:merchant)
+      invoice = customer.invoices.create(customer_id: customer.id, merchant_id: merchant.id, status: "filled")
+      expect(invoice).to respond_to(:invoice_items)
+    end
+
+    it "has_many items through invoice items" do
+      customer = create(:customer)
+      merchant = create(:merchant)
+      invoice = customer.invoices.create(customer_id: customer.id, merchant_id: merchant.id, status: "filled")
+      expect(invoice).to respond_to(:items)
     end
   end
 end

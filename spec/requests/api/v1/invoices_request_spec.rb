@@ -66,4 +66,22 @@ describe 'invoices endpoints' do
 
     #also do this for other attributes on invoices?
   end
+
+  context 'GET /api/v1/invoices/random' do
+    it 'returns a random invoice' do
+      customer = create(:customer)
+      merchant = create(:merchant)
+
+      invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
+      invoice2 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
+
+      get "/api/v1/invoices/random"
+
+      expect(response).to be_success
+    #how else to test this?
+    end
+
+    #also do this for other attributes on invoices?
+  end
+
 end
