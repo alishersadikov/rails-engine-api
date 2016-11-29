@@ -43,4 +43,6 @@ namespace :import_from_csv do
     csv.each { |row| Transaction.create!(row.to_hash) }
   end
 
+  desc "import all data"
+  task :import_all => [:import_customers, :import_merchants, :import_invoices, :import_items, :import_invoice_items, :import_transactions]
 end
