@@ -3,6 +3,8 @@ FactoryGirl.define do
     name "MyString"
     description "MyText"
     unit_price 1
-    references ""
+    factory :item_with_merchant do
+      merchant {create(:merchant)}
+    end
   end
 end
