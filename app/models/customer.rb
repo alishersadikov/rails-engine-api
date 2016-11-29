@@ -4,4 +4,8 @@ class Customer < ApplicationRecord
 
   has_many :invoices
   has_many :merchants, through: :invoices
+
+  def self.select_random_customer
+    order("RANDOM()").first(1)
+  end
 end
