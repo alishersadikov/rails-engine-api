@@ -33,4 +33,20 @@ describe 'invoices endpoints' do
       expect(invoice["status"]).to eq("filled")
     end
   end
+
+  context 'GET /api/v1/invoices/find?parameters' do
+    it 'returns a single index based on id' do
+      customer = create(:customer)
+      merchant = create(:merchant)
+
+      invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
+
+      get "/api/v1/invoices/find?id=#{invoice.id}"
+
+      expect(response).to be_success
+      expect(invoice["id"]).to eq(invoice.id)
+    end
+
+    #also do this for other attributes on invoices?
+  end
 end
