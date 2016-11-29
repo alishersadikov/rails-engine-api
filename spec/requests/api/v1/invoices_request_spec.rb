@@ -50,7 +50,7 @@ describe 'invoices endpoints' do
     #also do this for other attributes on invoices?
   end
 
-  context 'GET /api/v1/invoices/find_all?parameters' do
+  context 'GET /api/v1/invoices/find_all?paramaters' do
     it 'returns all invoices based on id' do
       customer = create(:customer)
       merchant = create(:merchant)
