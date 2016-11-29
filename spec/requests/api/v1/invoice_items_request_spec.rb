@@ -53,7 +53,7 @@ describe 'invoice items endpoints' do
       expect(invoice_item_parsed["id"]).to eq(invoice_item.id)
     end
 
-    #also do this for other attributes on invoices?
+    #also do this for other updated at and created at
   end
 #
   context 'GET /api/v1/invoice_items/find_all?paramaters' do
@@ -74,7 +74,7 @@ describe 'invoice items endpoints' do
       expect(invoice_items_parsed.first["id"]).to eq(invoice_item1.id)
     end
 
-    #also do this for other attributes on invoices?
+    #also do this for other created at and updated at
   end
 
   context 'GET /api/v1/invoice_items/random' do
@@ -92,12 +92,9 @@ describe 'invoice items endpoints' do
       invoice_item_parsed = JSON.parse(response.body)
 
       expect(response).to be_success
-
-
     #how else to test this?
     end
 
-    #also do this for other attributes on invoices?
-  end
 
+  end
 end
