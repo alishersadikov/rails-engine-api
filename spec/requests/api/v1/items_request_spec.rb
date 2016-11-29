@@ -29,7 +29,7 @@ describe 'items endpoints' do
   end
 
   context 'GET /api/v1/items/find?parameters' do
-    it 'returns a single item based on id find parameter' do
+    it 'returns a single item based on id parameter' do
       new_item = create(:item_with_merchant)
       new_item2 = create(:item_with_merchant)
 
@@ -41,7 +41,7 @@ describe 'items endpoints' do
       expect(item_parsed["id"]).to eq(new_item.id)
     end
 
-    it 'returns a single item based on name find paramater' do
+    it 'returns a single item based on name paramater' do
       new_item = create(:item_with_merchant)
       new_item2 = create(:item_with_merchant)
 
@@ -53,7 +53,7 @@ describe 'items endpoints' do
       expect(item_parsed["name"]).to eq(new_item.name)
     end
 
-    it 'returns a single item based on description find paramater' do
+    it 'returns a single item based on description paramater' do
       new_item = create(:item_with_merchant)
       new_item2 = create(:item_with_merchant)
 
@@ -100,6 +100,18 @@ describe 'items endpoints' do
     #   expect(response).to be_success
     #   expect(item_parsed["created_at"]).to eq(new_item.created_at)
     # end
+
+    # it 'returns a single item based on updated_at find paramater' do
+    #   new_item = create(:item_with_merchant)
+    #   new_item2 = create(:item_with_merchant)
+    #
+    #   get "/api/v1/items/find?created_at=#{new_item.updated_at}"
+    #
+    #   item_parsed = JSON.parse(response.body)
+    #
+    #   expect(response).to be_success
+    #   expect(item_parsed["updated_at"]).to eq(new_item.updated_at)
+    # end
   end
 
   context 'GET /api/v1/items/find_all?paramaters' do
@@ -113,6 +125,43 @@ describe 'items endpoints' do
       expect(response).to be_success
       expect(item_parsed.first["id"]).to eq(new_item.id)
     end
+
+    it 'returns all items based on name' do
+      new_item = create(:item_with_merchant)
+      new_item = create(:item_with_merchant)
+
+      get "/api/v1/items/find_all?name=#{new_item.name}"
+
+      items_parsed = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(items_parsed.first["name"]).to eq(new_item.name)
+      expect(items_parsed.count).to eq(2)
+    end
+
+    # it 'returns all items based on created_at' do
+    #   new_item = create(:item_with_merchant)
+    #   new_item = create(:item_with_merchant)
+    #
+    #   get "/api/v1/items/find_all?id=#{new_item.created_at}"
+    #
+    #   item_parsed = JSON.parse(response.body)
+    #
+    #   expect(response).to be_success
+    #   expect(item_parsed.first["created_at"]).to eq(new_item.created_at)
+    # end
+    #
+    # it 'returns all items based on updated_at' do
+    #   new_item = create(:item_with_merchant)
+    #   new_item = create(:item_with_merchant)
+    #
+    #   get "/api/v1/items/find_all?id=#{new_item.updated_at}"
+    #
+    #   item_parsed = JSON.parse(response.body)
+    #
+    #   expect(response).to be_success
+    #   expect(item_parsed.first["updated_at"]).to eq(new_item.updated_at)
+    # end
 
     #also do this for other attributes on items
   end
@@ -130,7 +179,5 @@ describe 'items endpoints' do
     #how else to test this?
     end
 
-
   end
-
 end
