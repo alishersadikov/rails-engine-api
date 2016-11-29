@@ -23,22 +23,6 @@ describe Customer do
         expect(customer).to be_valid
       end
     end
-
-    context "uniqueness" do
-      xit "is invalid if full name is not unique" do
-        Customer.create(first_name: "Jeff", last_name: "Casimir")
-        customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
-
-        expect(customer).to be_invalid
-      end
-
-      it "is valid with a with a unique full name" do
-        Customer.create(first_name: "Jeff", last_name: "Casimir")
-        customer = Customer.new(first_name: "Josh", last_name: "Mejia")
-
-        expect(customer).to be_valid
-      end
-    end
   end
 
   describe "relationships" do

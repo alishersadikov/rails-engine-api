@@ -17,22 +17,6 @@ describe Merchant do
         expect(merchant).to be_valid
       end
     end
-
-    context "uniqueness" do
-      xit "is invalid if name is not unique" do
-        Merchant.create(name: "some merchant")
-        merchant = Merchant.new(name: "some merchant")
-
-        expect(merchant).to be_invalid
-      end
-
-      it "is valid if name is unique" do
-        Merchant.create(name: "some merchant")
-        merchant = Merchant.new(name: "other merchant")
-
-        expect(merchant).to be_valid
-      end
-    end
   end
 
   describe "relationships" do
