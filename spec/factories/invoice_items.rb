@@ -6,7 +6,7 @@ FactoryGirl.define do
     factory :invoice_item_with_invoice do
       invoice {create(:invoice_with_customer_and_merchant)}
     end
-    quantity 1
-    unit_price 1
+    quantity 100
+    unit_price 10.00
   end
 end
