@@ -13,8 +13,24 @@ describe 'merchants relationships' do
 
       expect(response).to be_success
       expect(merchant.items.count).to eq(2)
-      expect(items.first["name"]).to eq(item.name)
+      expect(merchant.items.first["name"]).to eq(item.name)
+    end
+  end
 
+  context 'GET /api/v1/merchants/:id/invoices' do
+    it 'returns a list of all invoices associated with one merchant' do
+      customer = create(:customer)
+      merchant = create(:merchant)
+      invoice1 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
+      invoice2 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
+
+      get "/api/v1/merchants/#{merchant.id}/invoices"
+
+      invoices = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(merchant.invoices.count).to eq(2)
+      expect(merchant.invoices.first["status"]).to eq(invoice1.status)
     end
   end
 end
