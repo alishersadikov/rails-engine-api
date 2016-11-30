@@ -34,4 +34,24 @@ describe "invoice relationships" do
       expect(invoice_items.last["unit_price"]).to eq(invoice_item_2.unit_price)
     end
   end
+
+  context "GET /api/v1/invoices/:id/items" do
+    it "returns a list of all items associated with one invoice" do
+      merchant = create(:merchant)
+      invoice = create(:invoice_with_customer_and_merchant, merchant_id: merchant.id)
+      item_1 = create(:item, merchant_id: merchant.id)
+      item_2 = create(:item, merchant_id: merchant.id)
+      invoice_item_1 = create(:invoice_item, item_id: item_1.id, invoice_id: invoice.id)
+      invoice_item_2 = create(:invoice_item, item_id: item_2.id, invoice_id: invoice.id)
+
+      get "/api/v1/invoices/#{invoice.id}/items"
+
+      items = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(items.count).to eq(2)
+      expect(items.first["name"]).to eq(item_1.name)
+      expect(items.last["description"]).to eq(item_2.description)
+    end
+  end
 end
