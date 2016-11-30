@@ -36,7 +36,6 @@ describe 'customers relationships' do
       expect(response).to be_success
       expect(transactions_parsed.first["id"]).to eq(transaction.id)
       expect(transactions_parsed.last["id"]).to eq(transaction2.id)
-      #need to have transaction controller set up first?
     end
   end
 end
