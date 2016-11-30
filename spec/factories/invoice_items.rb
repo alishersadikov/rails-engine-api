@@ -4,7 +4,7 @@ FactoryGirl.define do
       item {create(:item_with_merchant)}
     end
     factory :invoice_item_with_invoice do
-      invoice {create(:invoice)}
+      invoice {create(:invoice_with_customer_and_merchant)}
     end
     quantity 1
     unit_price 1
