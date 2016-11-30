@@ -10,7 +10,7 @@ class Merchant < ApplicationRecord
   def self.select_random_merchant
     order("RANDOM()").first(1)
   end
-
+' '
   def revenue
     revenue = invoices.joins(:invoice_items, :transactions)
     .merge(Transaction.successful)
