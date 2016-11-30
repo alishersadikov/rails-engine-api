@@ -7,10 +7,10 @@ Rails.application.routes.draw do
         get '/find', to: 'search#show'
         get '/find_all', to: 'search#index'
         get '/random', to: 'random#show'
+        get '/:id/transactions', to: 'transactions#index'
       end
 
       resources :invoices, only: [:index, :show]
-
 
       namespace :items do
         get '/find', to: 'search#show'
