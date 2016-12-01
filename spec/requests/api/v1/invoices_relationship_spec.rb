@@ -31,7 +31,7 @@ describe "invoice relationships" do
       expect(response).to be_success
       expect(invoice_items.count).to eq(2)
       expect(invoice_items.first["quantity"]).to eq(invoice_item_1.quantity)
-      expect(invoice_items.last["unit_price"]).to eq(invoice_item_2.unit_price)
+      expect(invoice_items.last["unit_price"]).to eq((invoice_item_2.unit_price/100.00).to_s)
     end
   end
 

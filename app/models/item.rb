@@ -10,4 +10,12 @@ class Item < ApplicationRecord
   def self.select_random_item
     order("RANDOM()").first(1)
   end
+
+  def best_day
+    date = invoices.joins(:invoice_items, :transactions)
+    .merge(Transaction.successful)
+    .order("invoice_items.quantity DESC", "created_at DESC")
+    .first.created_at
+    { best_day: date }
+  end
 end
