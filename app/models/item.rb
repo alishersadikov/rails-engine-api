@@ -17,7 +17,6 @@ class Item < ApplicationRecord
     .group(:id)
     .order("count(invoice_items.quantity) DESC", "created_at DESC")
     .first.created_at
-
   end
 
   def self.most_revenue(quantity=1)
