@@ -16,7 +16,7 @@ describe "item" do
       parsed_date = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(parsed_date["date"]).to eq(date)
+      expect(parsed_date["best_day"]).to eq(date)
     end
   end
 end
