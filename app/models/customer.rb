@@ -9,4 +9,11 @@ class Customer < ApplicationRecord
   def self.select_random_customer
     order("RANDOM()").first(1)
   end
+
+  def favorite_merchant
+    merchants.joins(:transactions)
+    .merge(Transaction.successful)
+    .group(:id, :name)
+    .order("count(transactions) DESC").first
+  end
 end
