@@ -13,7 +13,7 @@ describe "merchants" do
       parsed_revenue = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(parsed_revenue["revenue"]).to eq(2000)
+      expect(parsed_revenue["total_revenue"]).to eq(2000)
     end
   end
 end

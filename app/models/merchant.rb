@@ -40,4 +40,10 @@ class Merchant < ApplicationRecord
     .group(:id, :first_name)
     .order("count(customers.id) DESC").first
   end
+
+  def self.top_merchants(quantity)
+    joins(invoices: :invoice_items)
+    .group(:id, "invoice_items.quantity")
+    .order("sum(invoice_items.quantity) DESC").limit(quantity)
+  end
 end
