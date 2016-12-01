@@ -54,4 +54,23 @@ class Merchant < ApplicationRecord
     .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
     .limit(quantity)
   end
+
+  def customers_with_pending_invoices
+    #  customers.joins(:transactions)
+    #  .where("transactions.result = 'failed'")
+     Customer.find_by_sql("
+        SELECT customers.* FROM customers
+        INNER JOIN invoices
+        ON invoices.customer_id = customers.id
+        WHERE invoices.merchant_id = #{self.id}
+        EXCEPT
+        SELECT customers.* FROM customers
+        INNER JOIN invoices
+        ON invoices.customer_id = customers.id
+        INNER JOIN transactions
+        ON transactions.invoice_id = invoices.id
+        WHERE transactions.result = 'success'
+        AND invoices.merchant_id = #{self.id}
+     ")
+  end
 end
