@@ -12,7 +12,7 @@ describe 'transactions endpoints' do
       expect(response).to be_success
       expect(transactions.count).to eq(2)
       expect(transactions.first["credit_card_number"]).to eq(transaction_1.credit_card_number)
-      expect(transactions.last["credit_card_expiration_date"]).to eq(transaction_2.credit_card_expiration_date)
+      expect(transactions.last["result"]).to eq(transaction_2.result)
     end
   end
 
@@ -60,7 +60,7 @@ describe 'transactions endpoints' do
       parsed_transaction = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(parsed_transaction["credit_card_expiration_date"]).to eq(transaction.credit_card_expiration_date)
+      expect(parsed_transaction["credit_card_number"]).to eq(transaction.credit_card_number)
     end
 
     it 'returns a single transaction based on result' do
@@ -117,7 +117,7 @@ describe 'transactions endpoints' do
       parsed_transactions = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(parsed_transactions.last["credit_card_expiration_date"]).to eq(transaction_2.credit_card_expiration_date)
+      expect(parsed_transactions.last["credit_card_number"]).to eq(transaction_2.credit_card_number)
     end
 
     it 'returns all transactions based on result' do
