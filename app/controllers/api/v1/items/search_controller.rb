@@ -15,6 +15,9 @@ class Api::V1::Items::SearchController < ApplicationController
   end
 
   def check_for_unit_price
-    params[:unit_price].gsub!(/^\"|\"?$/, '') if params[:unit_price]
+   if params[:unit_price]
+     params[:unit_price] = (params[:unit_price].gsub!(/^\"|\"?$/, '').to_f*100).round
+   end
+
   end
 end
