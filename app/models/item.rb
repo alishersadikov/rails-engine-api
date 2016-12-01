@@ -35,5 +35,4 @@ class Item < ApplicationRecord
     .order("count(invoice_items.quantity) DESC")
     .limit(quantity)
   end
-
 end

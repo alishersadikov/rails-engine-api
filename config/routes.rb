@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         get '/:id/invoices', to: 'invoices#index'
         get '/:id/revenue', to: 'revenues#show'
         get '/:id/favorite_customer', to: 'customers#show'
+        get '/:id/customers_with_pending_invoices', to: 'customers#index'
       end
 
       namespace :customers do
