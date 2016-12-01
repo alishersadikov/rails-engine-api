@@ -74,7 +74,7 @@ describe 'items endpoints' do
       item_parsed = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(item_parsed["unit_price"]).to eq(new_item.unit_price)
+      expect(item_parsed["unit_price"]).to eq((new_item.unit_price/100.00).to_s)
     end
 
     it 'returns a single item based on merchant id find paramater' do
