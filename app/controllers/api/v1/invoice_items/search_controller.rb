@@ -10,6 +10,13 @@ class Api::V1::InvoiceItems::SearchController < ApplicationController
   private
 
   def invoice_item_params
+    check_for_unit_price
     params.permit(:id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at)
+  end
+
+  def check_for_unit_price
+   if  params[:unit_price]
+     params[:unit_price] = (params[:unit_price].gsub!(/^\"|\"?$/, '').to_f*100).round
+   end
   end
 end
