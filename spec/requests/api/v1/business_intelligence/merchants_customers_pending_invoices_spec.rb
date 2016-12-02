@@ -18,6 +18,7 @@ describe 'merchants endpoint showing customers with pending invoices' do
       expect(response).to be_success
       expect(parsed_customers.first["id"]).to eq(customer_2.id)
       expect(parsed_customers.first["first_name"]).to eq(customer_2.first_name)
+      expect(parsed_customers.first["id"]).to_not eq(customer_1.id)
     end
   end
 end

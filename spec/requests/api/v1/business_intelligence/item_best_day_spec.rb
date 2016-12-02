@@ -8,8 +8,7 @@ describe "item" do
       invoice_1 = create(:invoice_with_transactions, created_at: date)
       invoice_2 = create(:invoice_with_transactions, created_at: date)
       invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item)
-      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item)
-      invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item)
+      invoice_item_2, invoice_item_3 = create_list(:invoice_item, 2, invoice: invoice_2, item: item)
 
       get "/api/v1/items/#{item.id}/best_day"
 
