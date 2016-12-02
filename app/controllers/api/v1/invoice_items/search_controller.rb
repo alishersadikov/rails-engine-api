@@ -16,7 +16,7 @@ class Api::V1::InvoiceItems::SearchController < ApplicationController
 
   def check_for_unit_price
    if  params[:unit_price]
-     params[:unit_price] = (params[:unit_price].gsub!(/^\"|\"?$/, '').to_f*100).round
+     params[:unit_price] = InvoiceItem.format_unit_price(params)
    end
   end
 end
