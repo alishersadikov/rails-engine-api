@@ -12,16 +12,7 @@ class Merchant < ApplicationRecord
   end
 
   def revenue(date = nil)
-    if date == nil
-      revenue = invoices.joins(:invoice_items, :transactions)
-      .merge(Transaction.successful)
-      .sum("invoice_items.quantity * invoice_items.unit_price")
-    else
-      revenue = invoices.joins(:invoice_items, :transactions)
-      .merge(Transaction.successful)
-      .where(created_at: date)
-      .sum("invoice_items.quantity * invoice_items.unit_price")
-    end
+    date ? revenue_for_date(date) : revenue_across_tranactions
   end
 
   def self.total_revenue(date)
@@ -67,5 +58,20 @@ class Merchant < ApplicationRecord
         WHERE transactions.result = 'success'
         AND invoices.merchant_id = #{self.id}
      ")
+  end
+
+  private
+
+  def revenue_for_date(date)
+    invoices.joins(:invoice_items, :transactions)
+    .merge(Transaction.successful)
+    .where(created_at: date)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def revenue_across_tranactions
+    invoices.joins(:invoice_items, :transactions)
+    .merge(Transaction.successful)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 end

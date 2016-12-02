@@ -4,7 +4,7 @@ FactoryGirl.define do
     credit_card_expiration_date "MyString"
     result "success"
     factory :transaction_with_invoice do
-      invoice {create(:invoice_with_customer_and_merchant)}
+      invoice { create(:invoice_with_customer_and_merchant) }
     end
   end
 end
