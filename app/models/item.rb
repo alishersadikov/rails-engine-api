@@ -19,7 +19,7 @@ class Item < ApplicationRecord
     .first.created_at
   end
 
-  def self.most_revenue(quantity=1)
+  def self.most_revenue(quantity = 1)
     joins(invoices: [:invoice_items, :transactions])
     .merge(Transaction.successful)
     .group(:id, :name)
@@ -27,7 +27,7 @@ class Item < ApplicationRecord
     .limit(quantity)
   end
 
-  def self.most_items(quantity=1)
+  def self.most_items(quantity = 1)
     joins(invoices: [:invoice_items, :transactions])
     .merge(Transaction.successful)
     .group(:id, :name)
