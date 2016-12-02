@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 describe Item do
-
   describe "validations" do
     context "invalid attributes" do
-
       it "is invalid without a name" do
         merchant = create(:merchant)
         item = merchant.items.create(description: "Item description!", unit_price: 5, merchant_id: merchant.id)
@@ -38,7 +36,6 @@ describe Item do
   end
 
   describe "relationships" do
-
     it "belongs to a merchant" do
       merchant = create(:merchant)
       item = merchant.items.create(name: "ItemName", description: "Item description!", unit_price: 5, merchant_id: merchant.id)
@@ -62,7 +59,7 @@ describe Item do
   end
 
   describe ".best_day" do
-    it "returns the best day for the item" do
+    it "returns the day with the most sales for the item" do
       date = "2016-12-01T17:30:21.051Z"
       item = create(:item_with_merchant)
       invoice_1 = create(:invoice_with_transactions, created_at: date)
@@ -100,6 +97,22 @@ describe Item do
 
       expect(Item.most_items.first.name).to eq(item_2.name)
       expect(Item.most_items.last.name).to eq(item_1.name)
+    end
+  end
+
+  describe ".format_unit_price" do
+    it "formats incoming price to make the database searchable" do
+      params = {"unit_price": "123.45"}
+      formatted = Item.format_unit_price(params)
+
+      expect(formatted).to eq(12345)
+    end
+
+    it "strips extra pair of quotes if needed" do
+      params = {"unit_price": "\"123.45\""}
+      formatted = Item.format_unit_price(params)
+
+      expect(formatted).to eq(12345)
     end
   end
 end
