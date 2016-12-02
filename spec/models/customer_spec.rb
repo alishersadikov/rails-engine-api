@@ -38,4 +38,16 @@ describe Customer do
       expect(customer).to respond_to(:merchants)
     end
   end
+
+  describe ".favorite_merchant" do
+    it "returns a favorite merchant" do
+      customer = create(:customer)
+      merchant_1, merchant_2 = create_list(:merchant, 2)
+      invoice_1 = create(:invoice_with_transactions, customer: customer, merchant: merchant_1)
+      invoice_2 = create(:invoice_with_transactions, customer: customer, merchant: merchant_2)
+      invoice_3 = create(:invoice_with_transactions, customer: customer, merchant: merchant_2)
+
+      expect(customer.favorite_merchant).to eq(merchant_2)
+    end
+  end
 end
