@@ -4,8 +4,7 @@ describe "item relationships" do
   context "GET /api/v1/items/:id/invoice_items" do
     it "returns all associated invoice_items with one item" do
       item = create(:item_with_merchant)
-      invoice_item_1 = create(:invoice_item_with_invoice, item_id: item.id)
-      invoice_item_2 = create(:invoice_item_with_invoice, item_id: item.id)
+      invoice_item_1, invoice_item_2 = create_list(:invoice_item_with_invoice, 2, item_id: item.id)
 
       get "/api/v1/items/#{item.id}/invoice_items"
 
