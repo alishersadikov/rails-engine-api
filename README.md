@@ -6,7 +6,7 @@ This project is a custom built JSON Rails Engine API to expose a SalesEngine dat
 ###To run this project locally:
 
 ```
-git clone alishersadikov/rails-engine-api
+git clone https://github.com/alishersadikov/rails-engine-api.git
 cd rails-engine-api
 bundle
 rake db:create db:migrate
@@ -18,7 +18,7 @@ To run tests: rspec
 
 ###To run the spec harness:
 ```
-git clone turingschool/rales-engine-spec-harness
+git clone https://github.com/turingschool/rales_engine_spec_harness.git
 cd rales_engine_spec_harness
 bundle
 rake
