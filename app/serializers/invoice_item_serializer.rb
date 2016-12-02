@@ -1,7 +1,8 @@
 class InvoiceItemSerializer < ActiveModel::Serializer
-  attributes :id, :invoice_id, :item_id, :quantity, :unit_price
+  attributes :id, :invoice_id, :item_id, :quantity
+  attribute :formatted_unit_price, :unit_price
 
-  def unit_price
-    sprintf "%.2f", "#{(object.unit_price/100.00)}"
+  def formatted_unit_price
+    sprintf "%.2f", (object.unit_price/100.00).to_s
   end
 end
