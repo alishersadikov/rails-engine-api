@@ -5,8 +5,8 @@ describe "merchant" do
     it "returns total revenue for a single merchant on a specific date" do
       merchant = create(:merchant)
       date = "2016-03-16 11:55:05"
-      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
-      invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1, created_at: date)
+      invoice = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
+      create(:invoice_item_with_item, invoice: invoice, created_at: date)
 
       get "/api/v1/merchants/#{merchant.id}/revenue?date=#{date}"
 

@@ -14,6 +14,6 @@ FactoryGirl.define do
     end
 
     quantity 100
-    unit_price "10.75"
+    unit_price "10.00"
   end
 end
