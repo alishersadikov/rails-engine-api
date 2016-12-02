@@ -32,6 +32,12 @@ describe Customer do
       expect(customer).to respond_to(:invoices)
     end
 
+    it "has many transactions through invoices" do
+      customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
+
+      expect(customer).to respond_to(:transactions)
+    end
+
     it "has many merchants through invoices" do
       customer = Customer.new(first_name: "Jeff", last_name: "Casimir")
 
@@ -40,12 +46,11 @@ describe Customer do
   end
 
   describe ".favorite_merchant" do
-    it "returns a favorite merchant" do
+    it "returns the merchant that customer had most transactions with" do
       customer = create(:customer)
       merchant_1, merchant_2 = create_list(:merchant, 2)
-      invoice_1 = create(:invoice_with_transactions, customer: customer, merchant: merchant_1)
-      invoice_2 = create(:invoice_with_transactions, customer: customer, merchant: merchant_2)
-      invoice_3 = create(:invoice_with_transactions, customer: customer, merchant: merchant_2)
+      create(:invoice_with_transactions, customer: customer, merchant: merchant_1)
+      create_list(:invoice_with_transactions, 2, customer: customer, merchant: merchant_2)
 
       expect(customer.favorite_merchant).to eq(merchant_2)
     end
