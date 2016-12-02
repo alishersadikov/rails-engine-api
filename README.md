@@ -3,7 +3,7 @@
 This project is a custom built JSON Rails Engine API to expose a SalesEngine data schema.
 
 
-##To run this project locally:
+###To run this project locally:
 
 ```
 git clone alishersadikov/rails-engine-api
