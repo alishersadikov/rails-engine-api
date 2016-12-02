@@ -62,7 +62,7 @@ describe Merchant do
   end
 
   describe ".total_revenue" do
-    it "returns the total revenue across merchants on one date" do
+    it "returns the total revenue across merchants for a specific date" do
       merchant = create(:merchant)
       date = "2016-03-16 11:55:05"
       invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
