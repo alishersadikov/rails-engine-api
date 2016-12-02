@@ -73,8 +73,6 @@ describe 'invoice items endpoints' do
       expect(response).to be_success
       expect(invoice_items_parsed.first["id"]).to eq(invoice_item1.id)
     end
-
-    #also do this for other created at and updated at
   end
 
   context 'GET /api/v1/invoice_items/random' do
@@ -87,14 +85,13 @@ describe 'invoice items endpoints' do
       invoice_item1 = invoice.invoice_items.create(item_id: item.id, invoice_id: invoice.id, quantity: 5, unit_price: 10)
       invoice_item2 = invoice.invoice_items.create(item_id: item.id, invoice_id: invoice.id, quantity: 5, unit_price: 10)
 
-      get "/api/v1/invoices/random"
-
+      get "/api/v1/invoice_items/random"
       invoice_item_parsed = JSON.parse(response.body)
 
+      get "/api/v1/invoice_items/random"
+      invoice_item_parsed_2 = JSON.parse(response.body)
+
       expect(response).to be_success
-    #how else to test this?
     end
-
-
   end
 end
