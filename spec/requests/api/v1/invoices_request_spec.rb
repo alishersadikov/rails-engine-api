@@ -45,33 +45,6 @@ describe 'invoices endpoints' do
       expect(response).to be_success
       expect(invoice_parsed["id"]).to eq(new_invoice.id)
     end
-
-    # it 'returns a single invoice based on created_at' do
-    #   customer = create(:customer)
-    #   merchant = create(:merchant)
-    #   new_invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-    #
-    #   get "/api/v1/invoices/find?id=#{new_invoice.created_at}"
-    #
-    #   invoice_parsed = JSON.parse(response.body)
-    #
-    #   expect(response).to be_success
-    #   expect(invoice_parsed["created_at"]).to eq(new_invoice.created_at)
-    # end
-    #
-    # it 'returns a single invoice based on updated_at' do
-    #   customer = create(:customer)
-    #   merchant = create(:merchant)
-    #   new_invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-    #
-    #   get "/api/v1/invoices/find?id=#{new_invoice.updated_at}"
-    #
-    #   invoice_parsed = JSON.parse(response.body)
-    #
-    #   expect(response).to be_success
-    #   expect(invoice_parsed["updated_at"]).to eq(new_invoice.updated_at)
-    # end
-
   end
 
   context 'GET /api/v1/invoices/find_all?paramaters' do
@@ -88,36 +61,6 @@ describe 'invoices endpoints' do
       expect(response).to be_success
       expect(invoices_parsed.first["id"]).to eq(invoice.id)
     end
-
-    # it 'returns all invoices based on created_at' do
-    #   customer = create(:customer)
-    #   merchant = create(:merchant)
-    #   invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-    #   invoice2 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-    #
-    #   get "/api/v1/invoices/find_all?id=#{invoice.created_at}"
-    #
-    #   invoices_parsed = JSON.parse(response.body)
-    #
-    #   expect(response).to be_success
-    #   expect(invoices_parsed.first["created_at"]).to eq(invoice.created_at)
-    # end
-    #
-    # it 'returns all invoices based on updated_at' do
-    #   customer = create(:customer)
-    #   merchant = create(:merchant)
-    #   invoice = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-    #   invoice2 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
-    #
-    #   get "/api/v1/invoices/find_all?id=#{invoice.updated_at}"
-    #
-    #   invoices_parsed = JSON.parse(response.body)
-    #
-    #   expect(response).to be_success
-    #   expect(invoices_parsed.first["updated_at"]).to eq(invoice.updated_at)
-    # end
-
-    #also do this for other attributes on invoices?
   end
 
   context 'GET /api/v1/invoices/random' do
@@ -129,10 +72,12 @@ describe 'invoices endpoints' do
       invoice2 = customer.invoices.create(merchant_id: merchant.id, status:"filled")
 
       get "/api/v1/invoices/random"
+      invoice_parsed = JSON.parse(response.body)
+
+      get "/api/v1/invoices/random"
+      invoice_parsed_2 = JSON.parse(response.body)
 
       expect(response).to be_success
-    #how else to test this?
     end
-
   end
 end
