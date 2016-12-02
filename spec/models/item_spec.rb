@@ -60,29 +60,27 @@ describe Item do
 
   describe ".best_day" do
     it "returns the day with the most sales for the item" do
-      date = "2016-12-01T17:30:21.051Z"
+      date_1 = "2016-12-01T17:30:21.051Z"
+      date_2 = "2000-12-01T17:30:21.051Z"
       item = create(:item_with_merchant)
-      invoice_1 = create(:invoice_with_transactions, created_at: date)
-      invoice_2 = create(:invoice_with_transactions, created_at: date)
-      invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item)
-      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item)
-      invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item)
+      invoice_1 = create(:invoice_with_transactions, created_at: date_1)
+      invoice_2 = create(:invoice_with_transactions, created_at: date_2)
+      create(:invoice_item, invoice: invoice_1, item: item)
+      create_list(:invoice_item, 2, invoice: invoice_2, item: item)
 
-      expect(item.best_day).to eq(date)
+      expect(item.best_day).to eq(date_2)
     end
   end
 
   describe ".most_revenue" do
     it "returns the top items ranked by total revenue" do
       item_1, item_2 = create_list(:item_with_merchant, 2)
-      invoice_1 = create(:invoice_with_transactions)
-      invoice_2 = create(:invoice_with_transactions)
-      invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1)
-      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_2)
-      invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item_2)
+      invoice_1, invoice_2 = create_list(:invoice_with_transactions, 2)
+      create(:invoice_item, invoice: invoice_1, item: item_1)
+      create_list(:invoice_item, 2, invoice: invoice_2, item: item_2)
 
-      expect(Item.most_revenue.first.name).to eq(item_2.name)
-      expect(Item.most_revenue.last.name).to eq(item_1.name)
+      expect(Item.most_revenue(2).first.id).to eq(item_2.id)
+      expect(Item.most_revenue(2).last.id).to eq(item_1.id)
     end
   end
 
@@ -95,8 +93,8 @@ describe Item do
       invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_2)
       invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item_2)
 
-      expect(Item.most_items.first.name).to eq(item_2.name)
-      expect(Item.most_items.last.name).to eq(item_1.name)
+      expect(Item.most_items(2).first.id).to eq(item_2.id)
+      expect(Item.most_items(2).last.id).to eq(item_1.id)
     end
   end
 
