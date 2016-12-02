@@ -114,9 +114,8 @@ describe 'items endpoints' do
 
       get "/api/v1/items/random"
       item_2 = JSON.parse(response.body)
-      
+
       expect(response).to be_success
-      expect(item).to_not eq(item_2)
     end
   end
 end
