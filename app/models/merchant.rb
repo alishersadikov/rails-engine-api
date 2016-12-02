@@ -12,22 +12,13 @@ class Merchant < ApplicationRecord
   end
 
   def revenue(date = nil)
-    if date == nil
-      revenue = invoices.joins(:invoice_items, :transactions)
-      .merge(Transaction.successful)
-      .sum("invoice_items.quantity * invoice_items.unit_price")
-    else
-      revenue = invoices.joins(:invoice_items, :transactions)
-      .merge(Transaction.successful)
-      .where(created_at: date)
-      .sum("invoice_items.quantity * invoice_items.unit_price")
-    end
+    date ? revenue_for_date(date) : revenue_across_tranactions
   end
 
   def self.total_revenue(date)
-    Invoice.all.where(created_at: date)
-    .joins(:invoice_items, :transactions)
+    joins(invoices: [:invoice_items, :transactions])
     .merge(Transaction.successful)
+    .where("invoices.created_at = '#{date}'")
     .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
@@ -38,13 +29,14 @@ class Merchant < ApplicationRecord
     .order("count(customers.id) DESC").first
   end
 
-  def self.top_merchants(quantity)
+  def self.top_merchants(quantity = 1)
     joins(invoices: :invoice_items)
     .group(:id, "invoice_items.quantity")
-    .order("sum(invoice_items.quantity) DESC").limit(quantity)
+    .order("sum(invoice_items.quantity) DESC")
+    .limit(quantity)
   end
 
-  def self.most_revenue(quantity=1)
+  def self.most_revenue(quantity = 1)
     joins(invoices: [:invoice_items, :transactions])
     .merge(Transaction.successful)
     .group(:id, :name)
@@ -53,19 +45,34 @@ class Merchant < ApplicationRecord
   end
 
   def customers_with_pending_invoices
-     Customer.find_by_sql("
-        SELECT customers.* FROM customers
-        INNER JOIN invoices
-        ON invoices.customer_id = customers.id
-        WHERE invoices.merchant_id = #{self.id}
-        EXCEPT
-        SELECT customers.* FROM customers
-        INNER JOIN invoices
-        ON invoices.customer_id = customers.id
-        INNER JOIN transactions
-        ON transactions.invoice_id = invoices.id
-        WHERE transactions.result = 'success'
-        AND invoices.merchant_id = #{self.id}
-     ")
+    Customer.find_by_sql("
+      SELECT customers.* FROM customers
+      INNER JOIN invoices
+      ON invoices.customer_id = customers.id
+      WHERE invoices.merchant_id = #{self.id}
+      EXCEPT
+      SELECT customers.* FROM customers
+      INNER JOIN invoices
+      ON invoices.customer_id = customers.id
+      INNER JOIN transactions
+      ON transactions.invoice_id = invoices.id
+      WHERE transactions.result = 'success'
+      AND invoices.merchant_id = #{self.id}
+    ")
+  end
+
+  private
+
+  def revenue_for_date(date)
+    invoices.joins(:invoice_items, :transactions)
+    .merge(Transaction.successful)
+    .where(created_at: date)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def revenue_across_tranactions
+    invoices.joins(:invoice_items, :transactions)
+    .merge(Transaction.successful)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 end

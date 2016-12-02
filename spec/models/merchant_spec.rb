@@ -20,52 +20,57 @@ describe Merchant do
   end
 
   describe "relationships" do
-    it "has many items" do
-      merchant = Merchant.new(name: "some merchant")
+    let(:merchant) { create(:merchant)}
 
+    it "has many items" do
       expect(merchant).to respond_to(:items)
     end
 
     it "has many invoices" do
-      merchant = Merchant.new(name: "some merchant")
-
       expect(merchant).to respond_to(:invoices)
     end
 
     it "has many customers through invoices" do
-      merchant = Merchant.new(name: "some merchant")
-
       expect(merchant).to respond_to(:customers)
+    end
+
+    it "has many invoice items through invoices" do
+      expect(merchant).to respond_to(:invoice_items)
+    end
+
+    it "has many transactions through invoices" do
+      expect(merchant).to respond_to(:transactions)
     end
   end
 
   describe ".revenue" do
-    it "returns the total revenue for merchant across transactions" do
-      merchant = create(:merchant)
-      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id)
-      invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1)
+    let!(:merchant) { create(:merchant) }
+    let!(:invoice) { create(:invoice_with_transactions, merchant_id: merchant.id) }
+    let!(:invoice_item) { create(:invoice_item_with_item, invoice: invoice) }
 
+    it "returns the total revenue for merchant across all transactions" do
       expect(merchant.revenue).to eq(2000)
     end
 
     it "returns the total revenue for merchant across transactions for a specific date" do
-      merchant = create(:merchant)
       date = "2016-03-16 11:55:05"
-      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
-      invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1, created_at: date)
+      invoice_2 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
+      invoice_items = create_list(:invoice_item_with_item, 2, invoice: invoice_2, created_at: date)
 
-      expect(merchant.revenue).to eq(2000)
+      expect(merchant.revenue(date)).to eq(4000)
     end
   end
 
   describe ".total_revenue" do
-    it "returns the total revenue across merchants on one date" do
-      merchant = create(:merchant)
+    it "returns the total revenue across merchants for a specific date" do
       date = "2016-03-16 11:55:05"
-      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
-      invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1, created_at: date)
+      merchant = create(:merchant)
+      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id)
+      invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1)
+      invoice_2 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
+      invoice_items = create_list(:invoice_item_with_item, 2, invoice: invoice_2, created_at: date)
 
-      expect(Merchant.total_revenue(date)).to eq(2000)
+      expect(Merchant.total_revenue(date)).to eq(4000)
     end
   end
 
@@ -74,8 +79,7 @@ describe Merchant do
       customer_1, customer_2 = create_list(:customer, 2)
       merchant = create(:merchant)
       invoice_1 = create(:invoice_with_transactions, customer: customer_1, merchant: merchant)
-      invoice_2 = create(:invoice_with_transactions, customer: customer_2, merchant: merchant)
-      invoice_3 = create(:invoice_with_transactions, customer: customer_2, merchant: merchant)
+      invoice_2, invoice_3 = create_list(:invoice_with_transactions, 2, customer: customer_2, merchant: merchant)
 
       expect(merchant.favorite_customer).to eq(customer_2)
     end
@@ -84,8 +88,7 @@ describe Merchant do
   describe ".top_merchants" do
     it "returns the top merchants ranked by total number of items sold" do
       merchant_1, merchant_2 = create_list(:merchant, 2)
-      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant_1.id)
-      invoice_2 = create(:invoice_with_transactions, merchant_id: merchant_1.id)
+      invoice_1, invoice_2 = create_list(:invoice_with_transactions, 2, merchant_id: merchant_1.id)
       invoice_3 = create(:invoice_with_transactions, merchant_id: merchant_2.id)
       invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1)
       invoice_item_2 = create(:invoice_item_with_item, invoice: invoice_2)
@@ -93,14 +96,14 @@ describe Merchant do
 
       expect(Merchant.top_merchants(2).first).to eq(merchant_1)
       expect(Merchant.top_merchants(2).last).to eq(merchant_2)
+      expect(Merchant.top_merchants.first).to eq(merchant_1)
     end
   end
 
   describe ".most_revenue" do
     it "returns the top merchants ranked by total revenue" do
       merchant_1, merchant_2 = create_list(:merchant, 2)
-      invoice_1 = create(:invoice_with_transactions, merchant_id: merchant_1.id)
-      invoice_2 = create(:invoice_with_transactions, merchant_id: merchant_1.id)
+      invoice_1, invoice_2 = create_list(:invoice_with_transactions, 2,  merchant_id: merchant_1.id)
       invoice_3 = create(:invoice_with_transactions, merchant_id: merchant_2.id)
       invoice_item_1 = create(:invoice_item_with_item, invoice: invoice_1)
       invoice_item_2 = create(:invoice_item_with_item, invoice: invoice_2)
@@ -108,13 +111,14 @@ describe Merchant do
 
       expect(Merchant.most_revenue(2).first).to eq(merchant_1)
       expect(Merchant.most_revenue(2).last).to eq(merchant_2)
+      expect(Merchant.most_revenue.first).to eq(merchant_1)
     end
   end
 
   describe ".customers_with_pending_invoices" do
     it "returns a list of customers with pending invoices" do
-      customer_1, customer_2 = create_list(:customer, 2)
       merchant = create(:merchant)
+      customer_1, customer_2 = create_list(:customer, 2)
       invoice_1 = create(:invoice, customer: customer_1, merchant: merchant)
       failed_transaction_1 = create(:transaction, result: "failed", invoice: invoice_1)
       successful_transaction = create(:transaction, result: "success", invoice: invoice_1)

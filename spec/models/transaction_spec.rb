@@ -38,4 +38,25 @@ describe Transaction do
       expect(transaction).to respond_to(:invoice)
     end
   end
+
+  describe "scope" do
+    let!(:successful_transactions) {
+          create_list(:transaction_with_invoice, 2, result: "success")
+        }
+    let!(:failed_transactions) {
+          create_list(:transaction_with_invoice, 3, result: "failed")
+        }
+
+    context "successful" do
+      it "returns all successful transactions" do
+        expect(Transaction.successful.count).to eq(successful_transactions.count)
+      end
+    end
+
+    context "failed" do
+      it "returns all failed transactions" do
+        expect(Transaction.failed.count).to eq(failed_transactions.count)
+      end
+    end
+  end
 end
