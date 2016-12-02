@@ -1,6 +1,6 @@
 # README
 
-This project built custom JSON Rails Engine API to expose a SalesEngine data schema.
+This project is a custom built JSON Rails Engine API to expose a SalesEngine data schema.
 
 
 ##To run this project locally:
