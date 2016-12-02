@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project built custom JSON Rails Engine API to expose a SalesEngine data schema.
 
-Things you may want to cover:
 
-* Ruby version
+##To run this project locally:
 
-* System dependencies
+```
+git clone alishersadikov/rails-engine-api
+bundle
+rake db:create db:migrate
+rake import_from_csv:import_all
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This app is written in Rails v5.0.0.1, and uses Rspec for testing with SimpleCov.
