@@ -13,3 +13,5 @@ rake import_from_csv:import_all
 ```
 
 This app is written in Rails v5.0.0.1, and uses Rspec for testing with SimpleCov.
+
+Link to original assignment: (http://backend.turing.io/module3/projects/rails_engine)
