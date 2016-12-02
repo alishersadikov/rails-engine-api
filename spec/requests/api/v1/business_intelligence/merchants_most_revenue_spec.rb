@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "merchants" do
   context "GET /api/v1/merchants/most_revenue?quantity=x" do
-    it "returns total revenue for all merchant on a specific date" do
+    it "returns top merchants ranked by total revenue" do
       merchant_1, merchant_2 = create_list(:merchant, 2)
       invoice_1 = create(:invoice_with_transactions, merchant_id: merchant_1.id)
       invoice_2 = create(:invoice_with_transactions, merchant_id: merchant_1.id)
