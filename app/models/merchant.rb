@@ -16,22 +16,19 @@ class Merchant < ApplicationRecord
       revenue = invoices.joins(:invoice_items, :transactions)
       .merge(Transaction.successful)
       .sum("invoice_items.quantity * invoice_items.unit_price")
-      { revenue: revenue }
     else
       revenue = invoices.joins(:invoice_items, :transactions)
       .merge(Transaction.successful)
       .where(created_at: date)
       .sum("invoice_items.quantity * invoice_items.unit_price")
-      { revenue: revenue }
     end
   end
 
   def self.total_revenue(date)
-    revenue = Invoice.all.where(created_at: date)
+    Invoice.all.where(created_at: date)
     .joins(:invoice_items, :transactions)
     .merge(Transaction.successful)
     .sum("invoice_items.quantity * invoice_items.unit_price")
-    { total_revenue: revenue }
   end
 
   def favorite_customer
@@ -56,8 +53,6 @@ class Merchant < ApplicationRecord
   end
 
   def customers_with_pending_invoices
-    #  customers.joins(:transactions)
-    #  .where("transactions.result = 'failed'")
      Customer.find_by_sql("
         SELECT customers.* FROM customers
         INNER JOIN invoices

@@ -12,12 +12,11 @@ class Item < ApplicationRecord
   end
 
   def best_day
-    date = invoices.joins(:invoice_items, :transactions)
+    invoices.joins(:invoice_items, :transactions)
     .merge(Transaction.successful)
     .group(:id)
     .order("count(invoice_items.quantity) DESC", "created_at DESC")
     .first.created_at
-    { best_day: date }
   end
 
   def self.most_revenue(quantity=1)
