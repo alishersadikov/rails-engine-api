@@ -72,7 +72,14 @@ Rails.application.routes.draw do
 
       resources :merchants, only: [:index, :show]
       resources :customers, only: [:index, :show]
-      resources :transactions, only: [:index, :show]
+      resources :transactions, only: [:index, :show] do
+        scope module: :transactions do
+          get '/find', to: 'search#show'
+          get '/find_all', to: 'search#index'
+          get '/random', to: 'random#show'
+          get '/invoice', to: 'invoices#show', on: :member
+        end
+      end
     end
   end
 end
