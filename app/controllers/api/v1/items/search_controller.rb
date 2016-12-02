@@ -18,6 +18,5 @@ class Api::V1::Items::SearchController < ApplicationController
    if params[:unit_price]
      params[:unit_price] = (params[:unit_price].gsub!(/^\"|\"?$/, '').to_f*100).round
    end
-
   end
 end
