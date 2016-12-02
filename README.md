@@ -27,5 +27,5 @@ rake
 
 This app is written in Rails v5.0.0.1, and uses Rspec for testing with SimpleCov.
 
-Link to original assignment: (http://backend.turing.io/module3/projects/rails_engine)
+Link to original assignment: (http://backend.turing.io/module3/projects/rails_engine)<br>
 Link to the spec harness: (https://github.com/turingschool/rales_engine_spec_harness)
