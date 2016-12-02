@@ -87,12 +87,10 @@ describe Item do
   describe ".most_items" do
     it "returns the top items ranked by total number sold" do
       item_1, item_2 = create_list(:item_with_merchant, 2)
-      invoice_1 = create(:invoice_with_transactions)
-      invoice_2 = create(:invoice_with_transactions)
-      invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1)
-      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_2)
-      invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item_2)
-
+      invoice_1, invoice_2 = create_list(:invoice_with_transactions, 2)
+      create(:invoice_item, invoice: invoice_1, item: item_1)
+      create_list(:invoice_item, 2, invoice: invoice_2, item: item_2)
+      
       expect(Item.most_items(2).first.id).to eq(item_2.id)
       expect(Item.most_items(2).last.id).to eq(item_1.id)
     end
