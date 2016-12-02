@@ -3,9 +3,7 @@ require 'rails_helper'
 describe "invoice relationships" do
   context "GET /api/v1/invoices/:id/transactions" do
     it "returns a list of all transactions associated with one invoice" do
-      invoice = create(:invoice_with_customer_and_merchant)
-      transaction_1 = create(:transaction, invoice_id: invoice.id)
-      transaction_2 = create(:transaction, invoice_id: invoice.id)
+      invoice = create(:invoice_with_transactions)
 
       get "/api/v1/invoices/#{invoice.id}/transactions"
 
@@ -13,13 +11,13 @@ describe "invoice relationships" do
 
       expect(response).to be_success
       expect(transactions.count).to eq(2)
-      expect(transactions.first["credit_card_number"]).to eq(transaction_1.credit_card_number)
-      expect(transactions.last["result"]).to eq(transaction_2.result)
+      expect(transactions.first["credit_card_number"]).to eq(invoice.transactions.first.credit_card_number)
+      expect(transactions.last["result"]).to eq(invoice.transactions.last.result)
     end
   end
 
   context "GET /api/v1/invoices/:id/invoice_items" do
-    it "returns a list of all invoice_items associated with one invoice" do
+    it "returns a list of all invoice items associated with one invoice" do
       invoice = create(:invoice_with_customer_and_merchant)
       invoice_item_1 = create(:invoice_item_with_item, invoice_id: invoice.id)
       invoice_item_2 = create(:invoice_item_with_item, invoice_id: invoice.id)
