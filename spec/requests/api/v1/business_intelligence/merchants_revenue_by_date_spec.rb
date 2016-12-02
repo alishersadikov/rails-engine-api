@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "merchants" do
   context "GET /api/v1/merchants/revenue?date=x" do
-    it "returns total revenue for all merchant on a specific date" do
+    it "returns total revenue for all merchants on a specific date" do
       merchant = create(:merchant)
       date = "2016-03-16 11:55:05"
       invoice_1 = create(:invoice_with_transactions, merchant_id: merchant.id, created_at: date)
