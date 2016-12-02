@@ -34,4 +34,8 @@ class Item < ApplicationRecord
     .order("count(invoice_items.quantity) DESC")
     .limit(quantity)
   end
+
+  def self.format_unit_price(params)
+    params[:unit_price] = (params[:unit_price].gsub!(/^\"|\"?$/, '').to_f*100).round
+  end
 end
